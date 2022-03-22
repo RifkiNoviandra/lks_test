@@ -14,20 +14,26 @@ class VirusDrop extends Component{
         this.height = 50
         this.x = 15
         this.y = 15
+        this.speed = 2
         this.virus = []
-
         this.score = 0
         this.miss = 0
 
         setInterval(() => {
-             this.virus.push(this.randomize())
-        } ,1000)
+            this.random_virus(Math.floor(this.score/ 20))
+        } , 1000)
     }
 
+    random_virus(data){
+        let i = 0
+        for ( i ; i <= data ; i++){
+            this.virus.push(this.randomize())
+        }
+    }
     draw(){
         this.virus.forEach((items , index) => {
             this.ctx.drawImage(this.img , items.x , items.y , this.width , this.height)
-            items.y += 2
+            items.y += this.speed + (Math.floor(this.score / 20)*2)
             // if (this.key.press.keyD && items.position === 0 && items.y >= this.hit.y - this.height && items.y <= this.hit.y + this.hit.height){
             //     this.virus.splice(index,1)
             //     this.score += 1
@@ -56,6 +62,7 @@ class VirusDrop extends Component{
                 if (items.position === bullet.position && items.y + this.height > bullet.y){
                     this.virus.splice(index , 1)
                     this.bullets.bullets.splice(bullet_index , 1)
+                    this.score += 1
                 }
             })
 

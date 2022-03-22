@@ -9,6 +9,13 @@ class Virus_game{
 
         const args = {canvas : this.canvas , ctx : this.ctx};
 
+        this.data_score = document.getElementById('score')
+        this.fail = document.getElementById('fail')
+        this.username = document.getElementById('username')
+        this.date_data = document.getElementById('playtime')
+        this.date = Date.now()
+        this.status = true
+
         this.bullets = new Bullets(args)
         this.key = new Key(args);
         this.space = new Space(args);
@@ -25,6 +32,11 @@ class Virus_game{
         this.path.key = this.key
 
         this.hitArea.setup(this);
+
+        setTimeout(() => {
+            this.status = false
+        } , 60000)
+
     }
 
     play(){
@@ -36,7 +48,19 @@ class Virus_game{
         this.virus.draw()
         this.bullets.draw()
         this.space.draw()
-        requestAnimationFrame(this.play.bind(this))
+
+        this.data_score.innerText = `Score : ${this.virus.score}`
+        this.fail.innerText = `Miss : ${this.virus.miss}`
+        this.username.innerText = localStorage.getItem('username')
+
+        console.log(this.status);
+        if (this.status && this.virus.miss < 5){
+
+            this.date_now = Date.now() - this.date
+
+            this.date_data.innerHTML = ((this.date_now/1000).toFixed(0)).toString()
+            requestAnimationFrame(this.play.bind(this))
+        }
     }
 
     hit_objects(){
